@@ -5,7 +5,7 @@ const Articles = () => {
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:4000/articles`)
+    fetch(`https://fast-spire-76079.herokuapp.com/articles`)
       .then((res) => res.json())
       .then((data) => {
         setArticles(data);
