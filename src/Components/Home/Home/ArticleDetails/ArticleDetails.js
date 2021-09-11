@@ -11,7 +11,7 @@ const ArticleDetails = () => {
   const [articleDetails, setArticleDetails] = useState({});
 
   useEffect(() => {
-    const url = `http://localhost:4000/article/${id}`;
+    const url = `https://fast-spire-76079.herokuapp.com/article/${id}`;
     fetch(url)
       .then((res) => res.json())
       .then((data) => setArticleDetails(data));
