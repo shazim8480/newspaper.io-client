@@ -1,10 +1,29 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/solid";
 
+import { UserContext } from "../../../../App";
+
 const Navbar = () => {
+  const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+  //set the confirmed state to isAdmin//
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    fetch(`http://localhost:4000/isAdmin`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      // confirmation to search admins by their required emails//
+      body: JSON.stringify({
+        email: loggedInUser.email,
+        password: loggedInUser.password,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => setIsAdmin(data));
+  }, [loggedInUser.email, loggedInUser.password]);
   return (
     <section className="sticky z-10 drop-shadow-lg">
       <Popover className="relative bg-white">
@@ -39,20 +58,22 @@ const Navbar = () => {
                 >
                   Blogs
                 </Link>
+                {isAdmin && (
+                  <Link
+                    to="/admin/dashboard"
+                    className="text-base text-gray-900 hover:text-gray-900"
+                  >
+                    Admin
+                  </Link>
+                )}
                 <Link
-                  to="/admin/dashboard"
-                  className="text-base text-gray-900 hover:text-gray-900"
-                >
-                  Admin
-                </Link>
-                <Link
-                  href="#"
+                  to="/login"
                   className="text-base text-gray-900 whitespace-nowrap hover:text-gray-900"
                 >
                   Sign in
                 </Link>
                 <Link
-                  to="/"
+                  to="/login"
                   className="inline-flex items-center justify-center px-4 py-2 ml-4 text-base font-medium bg-red-500 border border-transparent rounded-md shadow-sm whitespace-nowrap text-red-50 hover:bg-red-600"
                 >
                   Sign up
@@ -91,36 +112,38 @@ const Navbar = () => {
               </div>
               <div className="px-5 py-6 space-y-6">
                 <div className="grid grid-cols-1 gap-y-4">
+                  {isAdmin && (
+                    <Link
+                      to="/admin/dashboard"
+                      className="text-base text-gray-900 hover:text-gray-900"
+                    >
+                      Admin
+                    </Link>
+                  )}
+
                   <Link
-                    href="#"
+                    to="/"
                     className="text-base text-gray-900 hover:text-gray-700"
                   >
-                    Courses
+                    Latest Articles
                   </Link>
-
                   <Link
                     to="/"
                     className="text-base text-gray-900 hover:text-gray-700"
                   >
                     Blogs
                   </Link>
-                  <Link
-                    to="/"
-                    className="text-base text-gray-900 hover:text-gray-700"
-                  >
-                    About Us
-                  </Link>
                 </div>
                 <div>
                   <Link
-                    to="/"
+                    to="/login"
                     className="flex items-center justify-center w-full px-4 py-2 font-medium text-gray-200 bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-600"
                   >
                     Sign up
                   </Link>
                   <p className="mt-6 font-medium text-center text-gray-900">
                     Existing customer?{" "}
-                    <Link to="/" className=" hover:text-gray-800">
+                    <Link to="/login" className=" hover:text-gray-800">
                       Sign in
                     </Link>
                   </p>

@@ -45,7 +45,7 @@ const AddArticle = () => {
     };
     console.log(articleData);
 
-    fetch("https://fast-spire-76079.herokuapp.com/addArticle", {
+    fetch("http://localhost:4000/addArticle", {
       method: "POST",
       headers: {
         "content-type": "application/json",

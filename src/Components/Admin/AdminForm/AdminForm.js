@@ -22,7 +22,7 @@ const AdminForm = () => {
     const adminData = { email: admin.email, password: admin.password };
     console.log(adminData);
 
-    fetch("https://fast-spire-76079.herokuapp.com/makeAdmin", {
+    fetch("http://localhost:4000/makeAdmin", {
       method: "POST",
       headers: {
         "content-type": "application/json",
